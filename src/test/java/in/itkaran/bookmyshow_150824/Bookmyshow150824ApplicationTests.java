@@ -9,10 +9,12 @@ import in.itkaran.bookmyshow_150824.dtos.BookMovieResponseDto;
 import in.itkaran.bookmyshow_150824.models.*;
 import in.itkaran.bookmyshow_150824.repositories.*;
 
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -20,6 +22,7 @@ import java.util.Date;
 import java.util.List;
 
 @SpringBootTest
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class Bookmyshow150824ApplicationTests {
 
     @Autowired
@@ -57,6 +60,7 @@ class Bookmyshow150824ApplicationTests {
     }
 
     @Test
+    @Order(11)
     void testUserSignUp() {
         SignUpRequestDto signUpRequestDto = new SignUpRequestDto();
         signUpRequestDto.setName("KK");
@@ -71,17 +75,19 @@ class Bookmyshow150824ApplicationTests {
     }
 
     @Test
+    @Order(12)
     void testBookMovie() {
         BookMovieRequestDto bookingMovieRequestDto = new BookMovieRequestDto();
-        bookingMovieRequestDto.setUserId(2L);
-        bookingMovieRequestDto.setShowId(2L);
-        bookingMovieRequestDto.setShowSeatIds(List.of(41L, 42L));
+        bookingMovieRequestDto.setUserId(1L);
+        bookingMovieRequestDto.setShowId(1L);
+        bookingMovieRequestDto.setShowSeatIds(List.of(11L, 12L));
         BookMovieResponseDto bookMovieResponseDto = bookingController.bookMovie(bookingMovieRequestDto);
         System.out.println(bookMovieResponseDto.getResponseStatus());
         System.out.println(bookMovieResponseDto.getBooking());
     }
 
     @Test
+    @Order(1)
     void testAddCity() {
         City city = new City();
         city.setName("Pune");
@@ -93,6 +99,7 @@ class Bookmyshow150824ApplicationTests {
     }
 
     @Test
+    @Order(2)
     void testAddScreen() {
         Screen screen = new Screen();
         screen.setName("Screen 1");
@@ -104,6 +111,7 @@ class Bookmyshow150824ApplicationTests {
     }
 
     @Test
+    @Order(3)
     void testAddTheatre() {
         Theatre theatre = new Theatre();
         theatre.setName("Inox Amanora Mall");
@@ -117,6 +125,7 @@ class Bookmyshow150824ApplicationTests {
     }
 
     @Test
+    @Order(4)
     void testAddMovie() {
         Movie movie = new Movie();
         movie.setName("The Shawshank Redemption");
@@ -128,6 +137,7 @@ class Bookmyshow150824ApplicationTests {
     }
 
     @Test
+    @Order(5)
     void testAddShow() {
         Show show = new Show();
         show.setMovie(movieRepository.findById(1L).get());
@@ -172,6 +182,7 @@ class Bookmyshow150824ApplicationTests {
     }
 
     @Test
+    @Order(6)
     void testAddSeatType() {
         SeatType seatType = new SeatType();
         seatType.setName("Gold");
@@ -183,6 +194,7 @@ class Bookmyshow150824ApplicationTests {
     }
 
     @Test
+    @Order(7)
     void testAddActor() {
         Actor actor = new Actor();
         actor.setName("Morgan Freeman");
@@ -194,6 +206,7 @@ class Bookmyshow150824ApplicationTests {
     }
 
     @Test
+    @Order(8)
     void testAddSeat() {
         int row = 2;
         int col = 10;
@@ -211,6 +224,7 @@ class Bookmyshow150824ApplicationTests {
     }
 
     @Test
+    @Order(9)
     void testAddShowSeat() {
         List<Seat> seats = seatRepository.findAll();
         for (Seat seat : seats) {
@@ -231,6 +245,7 @@ class Bookmyshow150824ApplicationTests {
     }
 
     @Test
+    @Order(10)
     void testAddShowSeatType() {
         ShowSeatType showSeatType = new ShowSeatType();
         showSeatType.setShow(showRepository.findById(1L).get());
