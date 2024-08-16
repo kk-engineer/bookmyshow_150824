@@ -21,11 +21,9 @@ public class PriceCalculatorService {
                 showSeatTypeRepository.findAllByShow(show);
 
         int amount = 0;
-
         for (ShowSeat showSeat : showSeats) {
             for (ShowSeatType showSeatType : showSeatTypes) {
-                System.out.println(showSeat.getSeat().getSeatType());
-                if (showSeat.getSeat().getSeatType().equals(showSeatType.getSeatType())) {
+                if (showSeat.getSeat().getSeatType().getName().equals(showSeatType.getSeatType().getName())) {
                     amount += showSeatType.getPrice();
                     break;
                 }

@@ -35,8 +35,10 @@ public class BookingService {
         this.bookingRepository = bookingRepository;
     }
 
+
     @Transactional(isolation = Isolation.SERIALIZABLE)
-    public Booking bookMovie(Long userId, Long showId, List<Long> showSeatIds) throws UserNotFoundException, ShowNotFoundException {
+    public Booking bookMovie(Long userId, Long showId, List<Long> showSeatIds)
+            throws UserNotFoundException, ShowNotFoundException {
         /*
         1. Get the user with the userId.
         2. Get the show with the showId.
@@ -52,32 +54,29 @@ public class BookingService {
          */
 
         Optional<User> optionalUser = userRepository.findById(userId);
-
         if (optionalUser.isEmpty()) {
-            throw new UserNotFoundException("User with id" + userId + " doesn't exist");
+            System.out.println(Thread.currentThread().getName() + " User with id" + userId + " doesn't exist");
+            throw new UserNotFoundException("User with id" +
+                    userId + " doesn't exist");
         }
-
         User user = optionalUser.get();
-
         Optional<Show> optionalShow = showRepository.findById(showId);
-
         if (optionalShow.isEmpty()) {
-            throw new ShowNotFoundException("Show with id: " + showId + " doesn't exist");
+            throw new ShowNotFoundException("Show with id: "
+                    + showId + " doesn't exist");
         }
-
         Show show = optionalShow.get();
-
         List<ShowSeat> showSeats = showSeatRepository.findAllById(showSeatIds);
 
+        // Set showSeat status to BLOCKED
         for (ShowSeat showSeat : showSeats) {
-            if (!showSeat.getShowSeatStatus().equals(ShowSeatStatus.AVAILABLE) || !(Objects.equals(showSeat.getShow().getId(), showId))) {
-                throw new RuntimeException("ShowSeat with id" + showSeat.getId() + " isn't available");
+            if (!showSeat.getShowSeatStatus().equals(ShowSeatStatus.AVAILABLE)) {
+                throw new RuntimeException("ShowSeat with id" +
+                        showSeat.getId() + " is NOT available");
             }
         }
-
-        for (ShowSeat showSeat : showSeats) {
+        for (ShowSeat showSeat: showSeats) {
             showSeat.setShowSeatStatus(ShowSeatStatus.BLOCKED);
-            //change the status in DB as well.
             showSeatRepository.save(showSeat);
         }
 
@@ -88,12 +87,10 @@ public class BookingService {
         booking.setUser(user);
         booking.setShowSeats(showSeats);
         booking.setBookingStatus(BookingStatus.PENDING);
-        booking.setCreatedAt(new Date());
         booking.setAmount(priceCalculatorService.calculatePrice(showSeats, show));
 
         //Save booking in the DB.
         bookingRepository.save(booking);
-
         return booking;
     }
 }

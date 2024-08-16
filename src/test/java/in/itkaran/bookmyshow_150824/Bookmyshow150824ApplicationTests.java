@@ -55,7 +55,7 @@ class Bookmyshow150824ApplicationTests {
         BookMovieRequestDto bookingMovieRequestDto = new BookMovieRequestDto();
         bookingMovieRequestDto.setUserId(1L);
         bookingMovieRequestDto.setShowId(1L);
-        bookingMovieRequestDto.setShowSeatIds(List.of(11L, 12L));
+        bookingMovieRequestDto.setShowSeatIds(List.of(13L, 14L));
         BookMovieResponseDto bookMovieResponseDto = bookingController.bookMovie(bookingMovieRequestDto);
         System.out.println(bookMovieResponseDto.getResponseStatus());
         System.out.println(bookMovieResponseDto.getBooking());
