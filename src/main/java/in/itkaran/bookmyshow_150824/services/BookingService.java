@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -69,7 +70,7 @@ public class BookingService {
         List<ShowSeat> showSeats = showSeatRepository.findAllById(showSeatIds);
 
         for (ShowSeat showSeat : showSeats) {
-            if (!showSeat.getShowSeatStatus().equals(ShowSeatStatus.AVAILABLE)) {
+            if (!showSeat.getShowSeatStatus().equals(ShowSeatStatus.AVAILABLE) || !(Objects.equals(showSeat.getShow().getId(), showId))) {
                 throw new RuntimeException("ShowSeat with id" + showSeat.getId() + " isn't available");
             }
         }

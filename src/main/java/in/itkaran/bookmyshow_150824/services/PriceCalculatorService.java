@@ -24,6 +24,7 @@ public class PriceCalculatorService {
 
         for (ShowSeat showSeat : showSeats) {
             for (ShowSeatType showSeatType : showSeatTypes) {
+                System.out.println(showSeat.getSeat().getSeatType());
                 if (showSeat.getSeat().getSeatType().equals(showSeatType.getSeatType())) {
                     amount += showSeatType.getPrice();
                     break;
