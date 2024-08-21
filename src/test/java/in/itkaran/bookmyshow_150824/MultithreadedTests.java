@@ -45,8 +45,8 @@ public class MultithreadedTests {
 
     @Test
     void testParallelSeatBooking() throws ExecutionException, InterruptedException {
-        Long showId = 5L, userId = 1L;
-        List<Long> bookingSeats = List.of(119L, 120L);
+        Long showId = 6L, userId = 1L;
+        List<Long> bookingSeats = List.of(124L, 125L);
         int numberOfThreads = 5;
         ExecutorService executorService = Executors.newFixedThreadPool(numberOfThreads);
         List<Future<ThreadResult>> futureBookings = new ArrayList<>();
@@ -67,7 +67,7 @@ public class MultithreadedTests {
             ThreadResult result = futureBooking.get();
             System.out.println("Thread: " + result.getThreadName());
             System.out.println("Booking: " + result.getResponse().getBooking());
-            System.out.println("Booking Status: " + result.getResponse().getResponseStatus());
+            System.out.println("Blocking Status: " + result.getResponse().getResponseStatus());
             System.out.println("#######################");
         }
     }
