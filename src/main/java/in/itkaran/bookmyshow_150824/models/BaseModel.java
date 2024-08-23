@@ -15,10 +15,8 @@ public class BaseModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @CreationTimestamp
     private Date createdAt;
-
     @UpdateTimestamp
     private Date lastModifiedAt;
 }

@@ -44,15 +44,15 @@ public class BookingService {
         2. Get the show with the showId.
         3. Get the list of show seats with the showSeatIds.
         4. Check if all the seats are available or not.
-        5. If yes, proceed with the booking.
-        6. If not, throw an exception.
+            a. If yes, proceed with the booking.
+            b. If not, throw an exception.
         ----------TAKE A LOCK---------
-        7. Check if all the seats are available or not.
-        8. Change the seat status to BLOCKED.
+        5. Change the seat status to BLOCKED.
         ----------RELEASE THE LOCK----------
-        9. Create the booking and move the payment page.
+        6. Create the booking and move to the payment page.
          */
 
+        // 1. Get the user with the userId.
         Optional<User> optionalUser = userRepository.findById(userId);
         if (optionalUser.isEmpty()) {
             System.out.println(Thread.currentThread().getName() + " User with id" + userId + " doesn't exist");
@@ -60,27 +60,32 @@ public class BookingService {
                     userId + " doesn't exist");
         }
         User user = optionalUser.get();
+
+        // 2. Get the show with the showId.
         Optional<Show> optionalShow = showRepository.findById(showId);
         if (optionalShow.isEmpty()) {
             throw new ShowNotFoundException("Show with id: "
                     + showId + " doesn't exist");
         }
         Show show = optionalShow.get();
-        List<ShowSeat> showSeats = showSeatRepository.findAllById(showSeatIds);
 
-        // Set showSeat status to BLOCKED
+        // 3. Get the list of show seats with the showSeatIds.
+        List<ShowSeat> showSeats = showSeatRepository.findAllById(showSeatIds);
+        // 4. Check if all the seats are available or not.
         for (ShowSeat showSeat : showSeats) {
             if (!showSeat.getShowSeatStatus().equals(ShowSeatStatus.AVAILABLE)) {
                 throw new RuntimeException("ShowSeat with id" +
                         showSeat.getId() + " is NOT available");
             }
         }
+
+        // 5. Set showSeat status to BLOCKED
         for (ShowSeat showSeat: showSeats) {
             showSeat.setShowSeatStatus(ShowSeatStatus.BLOCKED);
             showSeatRepository.save(showSeat);
         }
 
-        //Create the booking and Move to the payment page.
+        //6. Create the booking and Move to the payment page.
         Booking booking = new Booking();
         booking.setBookingReference(
                 RandomStringGenerationService.generateRandomAlphanumericString());

@@ -13,18 +13,13 @@ public class Booking extends BaseModel {
     private String bookingReference;
     @ManyToMany
     private List<ShowSeat> showSeats;
-
     @ManyToOne
     private User user;
-
     @Enumerated(EnumType.ORDINAL)
     private BookingStatus bookingStatus;
-
     private int amount; // 20050 => 200.50
-
     @OneToMany
     private List<Payment> payments;
-
     public String toString() {
         return "Booking Details:\n" +
                 "Reference: " + bookingReference + "\n" +

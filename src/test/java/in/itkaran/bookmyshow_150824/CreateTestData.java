@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -23,6 +24,10 @@ import java.util.List;
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class CreateTestData {
+    @Autowired
+    BCryptPasswordEncoder bCryptPasswordEncoder;
+    @Autowired
+    UserRepository userRepository;
     @Autowired
     BookingRepository bookingRepository;
     @Autowired
@@ -48,6 +53,16 @@ public class CreateTestData {
 
     @Test
     void contextLoads() {
+    }
+
+    @Test
+    @Order(1)
+    void testAddUser() {
+        User user = new User();
+        user.setName("AK");
+        user.setEmail("ak@x.com");
+        user.setPassword(bCryptPasswordEncoder.encode("Scaler"));
+        userRepository.save(user);
     }
 
     @Test

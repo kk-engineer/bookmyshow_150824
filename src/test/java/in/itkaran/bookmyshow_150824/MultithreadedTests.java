@@ -3,12 +3,12 @@ package in.itkaran.bookmyshow_150824;
 import in.itkaran.bookmyshow_150824.controllers.BookingController;
 import in.itkaran.bookmyshow_150824.dtos.BookMovieRequestDto;
 import in.itkaran.bookmyshow_150824.dtos.BookMovieResponseDto;
+import lombok.Getter;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +18,8 @@ import java.util.concurrent.*;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class MultithreadedTests {
     // class to store the result of a thread
-    class ThreadResult {
+    @Getter
+    static class ThreadResult {
         private final String threadName;
         private final BookMovieResponseDto response;
 
@@ -27,13 +28,6 @@ public class MultithreadedTests {
             this.response = response;
         }
 
-        public String getThreadName() {
-            return threadName;
-        }
-
-        public BookMovieResponseDto getResponse() {
-            return response;
-        }
     }
 
     @Autowired
@@ -45,8 +39,8 @@ public class MultithreadedTests {
 
     @Test
     void testParallelSeatBooking() throws ExecutionException, InterruptedException {
-        Long showId = 6L, userId = 1L;
-        List<Long> bookingSeats = List.of(124L, 125L);
+        Long showId = 1L, userId = 1L;
+        List<Long> bookingSeats = List.of(5L, 6L);
         int numberOfThreads = 5;
         ExecutorService executorService = Executors.newFixedThreadPool(numberOfThreads);
         List<Future<ThreadResult>> futureBookings = new ArrayList<>();
